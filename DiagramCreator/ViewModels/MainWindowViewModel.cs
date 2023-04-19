@@ -22,6 +22,50 @@ namespace DiagramCreator.ViewModels
             }
         }
 
+        private bool _MethIsStatic;
+
+        public bool MethIsStatic
+        {
+            get { return _MethIsStatic; }
+            set
+            {
+                this.RaiseAndSetIfChanged(ref _MethIsStatic, value);
+            }
+        }
+
+        private bool _MethIsAbstract;
+
+        public bool MethIsAbstract
+        {
+            get { return _MethIsAbstract; }
+            set
+            {
+                this.RaiseAndSetIfChanged(ref _MethIsAbstract, value);
+            }
+        }
+
+        private bool _MethIsVirtual;
+
+        public bool MethIsVirtual
+        {
+            get { return _MethIsVirtual; }
+            set
+            {
+                this.RaiseAndSetIfChanged(ref _MethIsVirtual, value);
+            }
+        }
+
+        private bool _MethIsCreate;
+
+        public bool MethIsCreate
+        {
+            get { return _MethIsCreate; }
+            set
+            {
+                this.RaiseAndSetIfChanged(ref _MethIsCreate, value);
+            }
+        }
+
         private bool _IsReadonly;
 
         public bool IsReadonly
@@ -54,6 +98,16 @@ namespace DiagramCreator.ViewModels
                 this.RaiseAndSetIfChanged(ref _NewAttrName, value);
             }
         }
+        private string _NewMethName;
+
+        public string NewMethName
+        {
+            get { return _NewMethName; }
+            set
+            {
+                this.RaiseAndSetIfChanged(ref _NewMethName, value);
+            }
+        }
         private string _NewAttrType;
 
         public string NewAttrType
@@ -62,6 +116,17 @@ namespace DiagramCreator.ViewModels
             set
             {
                 this.RaiseAndSetIfChanged(ref _NewAttrType, value);
+            }
+        }
+
+        private string _NewMethType;
+
+        public string NewMethType
+        {
+            get { return _NewMethType; }
+            set
+            {
+                this.RaiseAndSetIfChanged(ref _NewMethType, value);
             }
         }
 
@@ -76,6 +141,28 @@ namespace DiagramCreator.ViewModels
             }
         }
 
+        private string _NewParamName;
+
+        public string NewParamName
+        {
+            get { return _NewParamName; }
+            set
+            {
+                this.RaiseAndSetIfChanged(ref _NewParamName, value);
+            }
+        }
+
+        private string _NewParamType;
+
+        public string NewParamType
+        {
+            get { return _NewParamType; }
+            set
+            {
+                this.RaiseAndSetIfChanged(ref _NewParamType, value);
+            }
+        }
+
         private int _NewAttrAccNumber;
 
         public int NewAttrAccNumber
@@ -86,6 +173,40 @@ namespace DiagramCreator.ViewModels
                 this.RaiseAndSetIfChanged(ref _NewAttrAccNumber, value);
             }
         }
+
+        private int _MethNumber;
+
+        public int MethNumber
+        {
+            get { return _MethNumber; }
+            set
+            {
+                this.RaiseAndSetIfChanged(ref _MethNumber, value);
+            }
+        }
+
+        private int _ParamNumber;
+
+        public int ParamNumber
+        {
+            get { return _ParamNumber; }
+            set
+            {
+                this.RaiseAndSetIfChanged(ref _ParamNumber, value);
+            }
+        }
+
+        private int _NewMethAccNumber;
+
+        public int NewMethAccNumber
+        {
+            get { return _NewMethAccNumber; }
+            set
+            {
+                this.RaiseAndSetIfChanged(ref _NewMethAccNumber, value);
+            }
+        }
+
         private int _NewAttrSterNumber;
 
         public int NewAttrSterNumber
@@ -163,6 +284,28 @@ namespace DiagramCreator.ViewModels
             }
         }
 
+        private ObservableCollection<Methods> _AllMethods;
+
+        public ObservableCollection<Methods> AllMethods
+        {
+            get { return _AllMethods; }
+            set
+            {
+                this.RaiseAndSetIfChanged(ref _AllMethods, value);
+            }
+        }
+
+        private ObservableCollection<Parametrs> _AllParametrs;
+
+        public ObservableCollection<Parametrs> AllParametrs
+        {
+            get { return _AllParametrs; }
+            set
+            {
+                this.RaiseAndSetIfChanged(ref _AllParametrs, value);
+            }
+        }
+
         private Canvas _newCanvas;
         public Canvas newCanvas
         {
@@ -182,22 +325,82 @@ namespace DiagramCreator.ViewModels
             AttrNumber = -1;
             NewAttrAccNumber = -1;
             NewAttrSterNumber = -1;
+            NewMethAccNumber = -1;
+            ParamNumber = -1;
+            MethNumber = -1;
             NewAttrName = "Название";
             NewAttrType = "Тип";
             DefaultSpec = "По умолчанию";
+            NewMethName = "Название";
+            NewMethType = "Тип";
+            NewParamName = "Название";
+            NewParamType = "Тип";
             IsDefault = IsStatic = IsReadonly = false;
             canv = mw.Find<Canvas>("canvas") ?? new Canvas();
             var panel = (Panel?)canv.Parent;
             allDiagramm = new ObservableCollection<Diagramm>();
             AllAttributes = new ObservableCollection<Attributes>();
+            AllMethods = new ObservableCollection<Methods>();
+            AllParametrs = new ObservableCollection<Parametrs>();
             allDiagramm.Add(new Diagramm());
             ButtonNumber = 1;
+        }
+        public void AddParametrButton()
+        {
+            AllParametrs.Add(new Parametrs(NewParamName, NewParamType));
+            NewParamName = "Название";
+            NewParamType = "Тип";
+        }
+        public void DeleteParametrButton()
+        {
+            if (ParamNumber == -1)
+            {
+                return;
+            }
+            AllParametrs.RemoveAt(ParamNumber);
         }
         public void AddDiagrammButton()
         {
             Window mw = new Window();
             AddWindow = new AddDiagramm { DataContext = this };
             AddWindow.Show();
+        }
+        public void AddMethodButton()
+        {
+            string ParamForAdd = "(";
+            if (NewMethAccNumber == -1)
+            {
+                return;
+            }
+            int n = AllParametrs.Count;
+            int i = 0;
+            foreach(var item in AllParametrs)
+            {
+                ParamForAdd += item.ParamName;
+                ParamForAdd += " : ";
+                ParamForAdd += item.ParamType;
+                if (i != n - 1)
+                {
+                    ParamForAdd += ", ";
+                }
+                i++;
+            }
+            ParamForAdd += ")";
+            AllMethods.Add(new Methods(NewMethName, NewMethType, NewMethAccNumber, MethIsAbstract, MethIsCreate, MethIsStatic, MethIsVirtual, ParamForAdd));
+            NewMethName = "Название";
+            NewMethType = "Тип";
+            NewMethAccNumber = -1;
+            MethIsAbstract = MethIsCreate = MethIsStatic = MethIsVirtual = false;
+            AllParametrs.Clear();
+        }
+        public void DeleteMethodButton()
+        {
+            if (MethNumber == -1)
+            {
+                return;
+            }
+            AllMethods.RemoveAt(MethNumber);
+
         }
         public void AddAttrButton()
         {

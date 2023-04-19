@@ -97,39 +97,74 @@
 				</Grid>
 			</TabItem>
 			<TabItem FontSize="28" Header="Операции">
-				<Grid  ColumnDefinitions="50, 200, 200, 50" RowDefinitions="30, *">
-					<Button Grid.Column="0" Grid.Row="0"  Height="30" Width="45" Background="Green"/>
-					<Button Grid.Column="3" Grid.Row="0"  Height="30" Width="45" Background="Red"/>
-					<TextBox Grid.Column="1" Grid.Row="0" HorizontalContentAlignment="Center" Text="Название"/>
-					<TextBox Grid.Column="2" Grid.Row="0" HorizontalContentAlignment="Center" Text="Тип"/>
+				<Grid ShowGridLines="False" ColumnDefinitions="50, 200, 200, 50" RowDefinitions="30, 130, *">
+					<Button Command="{Binding $parent[Window].DataContext.AddMethodButton}" Grid.Column="0" Grid.Row="0"  Height="30" Width="45" Background="Green"/>
+					<Button Command="{Binding $parent[Window].DataContext.DeleteMethodButton}" Grid.Column="3" Grid.Row="0"  Height="30" Width="45" Background="Red"/>
+					<TextBox Grid.Column="1" Grid.Row="0" HorizontalContentAlignment="Center" Text="{Binding NewMethName}"/>
+					<TextBox Grid.Column="2" Grid.Row="0" HorizontalContentAlignment="Center" Text="{Binding NewMethType}"/>
 					<Grid Grid.Row="1" ColumnDefinitions="105, 150, *" RowDefinitions="130, *">
 						<StackPanel Grid.Column="0">
-							<CheckBox FontSize="18">
+							<CheckBox IsChecked="{Binding MethIsAbstract}" FontSize="18">
 								abstract
 							</CheckBox>
-							<CheckBox FontSize="18">
+							<CheckBox IsChecked="{Binding MethIsStatic}" FontSize="18">
 								static
 							</CheckBox>
-							<CheckBox FontSize="18">
+							<CheckBox IsChecked="{Binding MethIsVirtual}" FontSize="18">
 							virtual
 							</CheckBox>
-							<CheckBox FontSize="18">
+							<CheckBox IsChecked="{Binding MethIsCreate}" FontSize="18">
 								create
 							</CheckBox>
 						</StackPanel>
-						<ComboBox HorizontalContentAlignment="Center" VerticalAlignment="Center" HorizontalAlignment="Center" Width="150" Grid.Row="0" Grid.Column="1">
+						<ComboBox SelectedIndex="{Binding NewMethAccNumber}" HorizontalContentAlignment="Center" VerticalAlignment="Center" HorizontalAlignment="Center" Width="110" Grid.Row="0" Grid.Column="1">
 							<ComboBoxItem HorizontalContentAlignment="Center">Public</ComboBoxItem>
 							<ComboBoxItem HorizontalContentAlignment="Center">Protected</ComboBoxItem>
 							<ComboBoxItem HorizontalContentAlignment="Center">Private</ComboBoxItem>
 							<ComboBoxItem HorizontalContentAlignment="Center">Package</ComboBoxItem>
 						</ComboBox>
-						<Grid Grid.Row="0" RowDefinitions="25, 30, 75, *" Grid.Column="2" ColumnDefinitions="90, 90, 30">
-							<Button Width="235" HorizontalContentAlignment="Center" FontSize="12" Grid.Row="0" Grid.Column="0">ДОБАВИТЬ ПАРАМЕТР</Button>
-							<Button Grid.Row="1" Height="30" Width="30" Grid.Column="2" Background="Red"></Button>
-							<TextBox Grid.Row="1" Grid.Column="0" Text="Название"></TextBox>
-							<TextBox Grid.Row="1" Grid.Column="1" Text="Тип"></TextBox>
+						<Grid  Grid.Row="0" RowDefinitions="25, 30, *" Grid.Column="2" ColumnDefinitions="90, 90, 90">
+							<Button Command="{Binding $parent[Window].DataContext.AddParametrButton}" Width="235" HorizontalContentAlignment="Center" FontSize="12" Grid.Row="0" Grid.Column="0">ДОБАВИТЬ ПАРАМЕТР</Button>
+							<Button Command="{Binding $parent[Window].DataContext.DeleteParametrButton}" Grid.Row="1" Height="30" Width="30" Grid.Column="2" Background="Red"></Button>
+							<TextBox Grid.Row="1" Grid.Column="0" Text="{Binding NewParamName}"></TextBox>
+							<TextBox Grid.Row="1" Grid.Column="1" Text="{Binding NewParamType}"></TextBox>
+							<ListBox SelectedIndex="{Binding ParamNumber}" Margin="0,5" Items="{Binding AllParametrs}" Grid.ColumnSpan="3" Grid.Row="2">
+								<ListBox.ItemTemplate>
+									<DataTemplate>
+										<Grid ColumnDefinitions="*,*">
+											<Border HorizontalAlignment="Left" Height="30" Width="80" Grid.Column="0" BorderThickness="2" BorderBrush="Black">
+												<TextBlock Padding="10,5" FontSize="12" Height="30"  Width="80" Grid.Column="0" Text="{Binding ParamName}"/>
+											</Border>
+											<Border HorizontalAlignment="Left" Height="30" Width="80" Grid.Column="1" BorderThickness="2" BorderBrush="Black">
+												<TextBlock Padding="10,5" FontSize="12"  Width="80" Height="30" Grid.Column="1" Text="{Binding ParamType}"/>
+											</Border>
+										</Grid>
+									</DataTemplate>
+								</ListBox.ItemTemplate>
+							</ListBox>
 						</Grid>
 					</Grid>
+					<ListBox SelectedIndex="{Binding MethNumber}" Grid.ColumnSpan="3" Items="{Binding AllMethods}" Grid.Row="2">
+						<ListBox.ItemTemplate>
+							<DataTemplate>
+									<Grid RowDefinitions="30, 30" ColumnDefinitions="150, 150, 150">
+										<Border Grid.Row="0" Grid.Column="0" BorderThickness="2" BorderBrush="Black">
+											<TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="0" Grid.Column="0" Text="{Binding MethName}"/>
+										</Border>
+										<Border Margin="10,0" Grid.Row="0" Grid.Column="1" BorderThickness="2" BorderBrush="Black">
+											<TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="0" Grid.Column="1" Text="{Binding MethType}"/>
+										</Border>
+										<Border HorizontalAlignment="Left" Width="100" Grid.Row="0" Grid.Column="2" BorderThickness="2" BorderBrush="Black">
+											<TextBlock Margin="65,5" Width="100" Grid.Row="0" Grid.Column="2" Text="{Binding MethAccess}"/>
+										</Border>
+										<Border HorizontalAlignment="Center" Margin="10,5" Width="175" Grid.Row="1" Grid.Column="0" BorderThickness="2" BorderBrush="Black">
+											<TextBlock Margin="-10,0" HorizontalAlignment="Right" FontSize="12" VerticalAlignment="Center" Width="175" Grid.Row="1" Grid.Column="0" Text="{Binding MethSpec}"/>
+										</Border>
+										<TextBox Margin="10, 0" Grid.ColumnSpan="2" IsReadOnly="True" HorizontalAlignment="Left" Height="12" FontSize="12" VerticalAlignment="Center" Width="240" Grid.Row="1" Grid.Column="1" Text="{Binding MethParam}"/>
+									</Grid>
+							</DataTemplate>
+						</ListBox.ItemTemplate>
+					</ListBox>
 				</Grid>
 			</TabItem>
 		</TabControl>
