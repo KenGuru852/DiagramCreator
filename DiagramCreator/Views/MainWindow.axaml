@@ -1,0 +1,83 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:DiagramCreator.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:views="clr-namespace:DiagramCreator.Views"
+		xmlns:local="clr-namespace:DiagramCreator.Models"
+		mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+		Width="1200" Height="800"
+        x:Class="DiagramCreator.Views.MainWindow"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="DiagramCreator">
+
+    <Design.DataContext>
+        <!-- This only sets the DataContext for the previewer in an IDE,
+             to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
+        <vm:MainWindowViewModel/>
+    </Design.DataContext>
+
+	<Window.DataTemplates>
+		<DataTemplate DataType="{x:Type local:Diagramm}">
+			<StackPanel Margin="{Binding MarginPoints}">
+			<Grid>
+				<Rectangle Stroke="Black" StrokeThickness="2" Width="150" Height="30"/>
+				<TextBox Focusable="False" Width="150" Height="30"  TextWrapping="Wrap" Text="{Binding DiagrammName}"/>
+			</Grid>
+			<Grid>
+				<Rectangle Stroke="Black" StrokeThickness="2" Width="150" Height="60"/>
+				<TextBox Focusable="False" Width="150" Height="60" TextWrapping="Wrap"  Text="{Binding DiagrammName}"/>
+			</Grid>
+			<Grid>
+				<Rectangle  Stroke="Black" StrokeThickness="2" Width="150" Height="60"/>
+				<TextBox IsReadOnly="True" TextWrapping="Wrap" Focusable="False" Width="150" Height="60"  Text="{Binding DiagrammName}"/>
+			</Grid>
+				<Rectangle Stroke="Black" StrokeThickness="2" Width="150" Height="10"/>
+			</StackPanel>	
+	</DataTemplate>
+	</Window.DataTemplates>
+
+	<Grid RowDefinitions="40, *">
+		<Grid Grid.Row="0" ColumnDefinitions="100, 100, 50, 50, 50, 50, 50, 50, 50, 50, 100, 100">
+			<Button Command="{Binding $parent[Window].DataContext.AddDiagrammButton}" Width="100" Grid.Column="0" Height="40" Grid.Row="0">
+				<TextBlock FontSize="17" TextAlignment="Center" VerticalAlignment="Center">ADD</TextBlock>
+			</Button>
+			<Button Height="40" Width="100" Grid.Column="1">
+				<TextBlock FontSize="17" TextAlignment="Center" VerticalAlignment="Center">DELETE</TextBlock>
+			</Button>
+			<Button Command="{Binding PressButton2}" Height="40" Grid.Column="4">
+				<Image Source="/Assets/Implementation.jpg" Height="40" Width="50" Grid.Column="3"> </Image>
+			</Button>
+			<Button Command="{Binding PressButton1}" Height="40" Grid.Column="3">
+				<Image Source="/Assets/inheritance.jpg" Height="40" Width="50" Grid.Column="3"> </Image>
+			</Button>
+			<Button Command="{Binding PressButton3}" Height="40" Grid.Column="5">
+				<Image Source="/Assets/addiction.jpg" Height="40" Width="50" Grid.Column="3"> </Image>
+			</Button>
+			<Button Command="{Binding PressButton4}" Height="40" Grid.Column="6">
+				<Image Source="/Assets/aggregation.jpg" Height="40" Width="50" Grid.Column="3"> </Image>
+			</Button>
+			<Button Command="{Binding PressButton5}" Height="40" Grid.Column="7">
+				<Image Source="/Assets/composition.jpg" Height="40" Width="50" Grid.Column="3"> </Image>
+			</Button>
+			<Button Command="{Binding PressButton6}" Height="40" Grid.Column="8">
+				<Image Source="/Assets/association.jpg" Height="40" Width="50" Grid.Column="3"> </Image>
+			</Button>
+			<Button Width="100" Height="40" Grid.Column="10">
+				<TextBlock FontSize="17" TextAlignment="Center" VerticalAlignment="Center">EXPORT</TextBlock>
+			</Button>
+			<Button Width="100" Height="40" Grid.Column="11">
+				<TextBlock FontSize="17" TextAlignment="Center" VerticalAlignment="Center">IMPORT</TextBlock>
+			</Button>
+		</Grid>
+		<ItemsControl PointerPressed="OnPointerPressed" Grid.Row="1" Items="{Binding allDiagramm}">
+			<ItemsControl.ItemsPanel>
+				<ItemsPanelTemplate>
+					<Canvas Name="canvas"/>
+				</ItemsPanelTemplate>
+			</ItemsControl.ItemsPanel>
+		</ItemsControl>
+	</Grid>
+
+	
+</Window>

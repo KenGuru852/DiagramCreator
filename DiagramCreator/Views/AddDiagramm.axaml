@@ -1,0 +1,141 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+		xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="500" d:DesignHeight="500"
+		Width="500" Height="500"
+        x:Class="DiagramCreator.Views.AddDiagramm"
+        Title="ЧИН ЧЕН ЧАН ЧОН"
+        xmlns:vm="using:DiagramCreator.ViewModels">
+
+	<!--Design.DataContext>
+        <vm:MainWindowViewModel/>
+    </Design.DataContext-->
+
+	<Grid  ColumnDefinitions="*,*,*" RowDefinitions="450, 50">
+		<TabControl Grid.Row="0" Grid.ColumnSpan="3">
+			<TabItem FontSize="16" Header="Общие параметры">
+				<Grid ColumnDefinitions="*,*" RowDefinitions="*,*,*">
+					<TextBlock  FontSize="30" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="0" Grid.Column="0" Text="НАЗВАНИЕ">
+					</TextBlock>
+					<TextBox  HorizontalContentAlignment="Center" VerticalAlignment="Center" HorizontalAlignment="Center" Width="200" Grid.Column="1">
+					</TextBox>
+					<TextBlock FontSize="30" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="1" Grid.Column="0" Text="СТЕРЕОТИП"/>
+					<ComboBox HorizontalContentAlignment="Center" VerticalAlignment="Center" HorizontalAlignment="Center" Width="200" Grid.Column="1" Grid.Row="1">
+						<ComboBoxItem HorizontalContentAlignment="Center">STATIC</ComboBoxItem>
+						<ComboBoxItem HorizontalContentAlignment="Center">ABSTRACT</ComboBoxItem>
+						<ComboBoxItem HorizontalContentAlignment="Center">INTERFACE</ComboBoxItem>
+					</ComboBox>
+					<TextBlock  FontSize="28" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="2" TextWrapping="Wrap" Grid.Column="0" Text="СПЕЦИФИКАТОР ВИДИМОСТИ"/>
+					<ComboBox HorizontalContentAlignment="Center" VerticalAlignment="Center" HorizontalAlignment="Center" Width="200" Grid.Column="1" Grid.Row="2">
+						<ComboBoxItem HorizontalContentAlignment="Center">Public</ComboBoxItem>
+						<ComboBoxItem HorizontalContentAlignment="Center">Protected</ComboBoxItem>
+						<ComboBoxItem HorizontalContentAlignment="Center">Private</ComboBoxItem>
+						<ComboBoxItem HorizontalContentAlignment="Center">Package</ComboBoxItem>
+					</ComboBox>
+				</Grid>
+			</TabItem>
+			<TabItem FontSize="30" Header="Атрибуты">
+				<Grid  ColumnDefinitions="50, 200, 200, 50" RowDefinitions="30, *">
+					<Button Command="{Binding $parent[Window].DataContext.AddAttrButton}" Grid.Column="0" Grid.Row="0"  Height="30" Width="45" Background="Green"/>
+					<Button Command="{Binding $parent[Window].DataContext.DeleteAttrButton}" Grid.Column="3" Grid.Row="0"  Height="30" Width="45" Background="Red"/>
+					<TextBox Grid.Column="1" Grid.Row="0" HorizontalContentAlignment="Center" Text="{Binding NewAttrName}"/>
+					<TextBox Grid.Column="2" Grid.Row="0" HorizontalContentAlignment="Center" Text="{Binding NewAttrType}"/>
+					<Grid Grid.Row="1" ColumnDefinitions="150, 150, 150" RowDefinitions="100, *">
+						<StackPanel Grid.Column="0">
+							<CheckBox IsChecked="{Binding IsReadonly}" FontSize="18">
+								Readonly
+							</CheckBox>
+							<CheckBox IsChecked="{Binding IsStatic}" FontSize="18">
+								Static
+							</CheckBox>
+							<CheckBox IsChecked="{Binding IsDefault}" FontSize="18">
+								<TextBox Text="{Binding DefaultSpec}"></TextBox>
+							</CheckBox>
+						</StackPanel>
+						<ComboBox SelectedIndex="{Binding NewAttrAccNumber}" HorizontalContentAlignment="Center" VerticalAlignment="Center" HorizontalAlignment="Center" Width="150" Grid.Row="0" Grid.Column="1">
+							<ComboBoxItem HorizontalContentAlignment="Center">Public</ComboBoxItem>
+							<ComboBoxItem HorizontalContentAlignment="Center">Protected</ComboBoxItem>
+							<ComboBoxItem HorizontalContentAlignment="Center">Private</ComboBoxItem>
+							<ComboBoxItem HorizontalContentAlignment="Center">Package</ComboBoxItem>
+						</ComboBox>
+						<ComboBox SelectedIndex="{Binding NewAttrSterNumber}" HorizontalContentAlignment="Center" VerticalAlignment="Center" HorizontalAlignment="Center" Width="100"  Grid.Column="2">
+							<ComboBoxItem  FontSize="18">
+								event
+							</ComboBoxItem>
+							<ComboBoxItem FontSize="18">
+								property
+							</ComboBoxItem>
+							<ComboBoxItem FontSize="18">
+								required
+							</ComboBoxItem>
+						</ComboBox>
+						<ListBox SelectedIndex="{Binding AttrNumber}" Grid.ColumnSpan="3" Grid.Row="1" Items="{Binding AllAttributes}">
+							<ListBox.ItemTemplate>
+								<DataTemplate>
+									<Grid RowDefinitions="30,30" ColumnDefinitions="*,*,*,30">
+										<Border Grid.Row="0" Grid.Column="0" BorderThickness="2" BorderBrush="Black"> 
+										<TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="0" Grid.Column="0" Text="{Binding AttrName}"/>
+										</Border>
+										<Border Margin="20,0" Grid.Row="0" Grid.Column="1" BorderThickness="2" BorderBrush="Black">
+											<TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="0" Grid.Column="0" Text="{Binding AttrType}"/>
+										</Border>
+										<Border Margin="10,0" Grid.Row="0" Grid.Column="2" BorderThickness="2" BorderBrush="Black">
+											<TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="0" Grid.Column="0" Text="{Binding AttrAccess}"/>
+										</Border>
+										<Border HorizontalAlignment="Left" Margin="0,5" Grid.Row="1" Width="250" Grid.Column="0" Grid.ColumnSpan="2" BorderThickness="2" BorderBrush="Black">
+											<TextBlock Margin="-25,0" HorizontalAlignment="Center" Width="250" Grid.Row="0" Grid.Column="0" Text="{Binding AttrSpec}"/>
+										</Border>
+										<Border HorizontalAlignment="Left" Margin="0,5" Grid.Row="1" Width="150" Grid.Column="2" Grid.ColumnSpan="2" BorderThickness="2" BorderBrush="Black">
+											<TextBlock Margin="-25,0" HorizontalAlignment="Right" Width="150" Grid.Row="0" Grid.Column="0" Text="{Binding AttrSter}"/>
+										</Border>
+									</Grid>
+								</DataTemplate>
+							</ListBox.ItemTemplate>
+						</ListBox>
+					</Grid>
+				</Grid>
+			</TabItem>
+			<TabItem FontSize="28" Header="Операции">
+				<Grid  ColumnDefinitions="50, 200, 200, 50" RowDefinitions="30, *">
+					<Button Grid.Column="0" Grid.Row="0"  Height="30" Width="45" Background="Green"/>
+					<Button Grid.Column="3" Grid.Row="0"  Height="30" Width="45" Background="Red"/>
+					<TextBox Grid.Column="1" Grid.Row="0" HorizontalContentAlignment="Center" Text="Название"/>
+					<TextBox Grid.Column="2" Grid.Row="0" HorizontalContentAlignment="Center" Text="Тип"/>
+					<Grid Grid.Row="1" ColumnDefinitions="105, 150, *" RowDefinitions="130, *">
+						<StackPanel Grid.Column="0">
+							<CheckBox FontSize="18">
+								abstract
+							</CheckBox>
+							<CheckBox FontSize="18">
+								static
+							</CheckBox>
+							<CheckBox FontSize="18">
+							virtual
+							</CheckBox>
+							<CheckBox FontSize="18">
+								create
+							</CheckBox>
+						</StackPanel>
+						<ComboBox HorizontalContentAlignment="Center" VerticalAlignment="Center" HorizontalAlignment="Center" Width="150" Grid.Row="0" Grid.Column="1">
+							<ComboBoxItem HorizontalContentAlignment="Center">Public</ComboBoxItem>
+							<ComboBoxItem HorizontalContentAlignment="Center">Protected</ComboBoxItem>
+							<ComboBoxItem HorizontalContentAlignment="Center">Private</ComboBoxItem>
+							<ComboBoxItem HorizontalContentAlignment="Center">Package</ComboBoxItem>
+						</ComboBox>
+						<Grid Grid.Row="0" RowDefinitions="25, 30, 75, *" Grid.Column="2" ColumnDefinitions="90, 90, 30">
+							<Button Width="235" HorizontalContentAlignment="Center" FontSize="12" Grid.Row="0" Grid.Column="0">ДОБАВИТЬ ПАРАМЕТР</Button>
+							<Button Grid.Row="1" Height="30" Width="30" Grid.Column="2" Background="Red"></Button>
+							<TextBox Grid.Row="1" Grid.Column="0" Text="Название"></TextBox>
+							<TextBox Grid.Row="1" Grid.Column="1" Text="Тип"></TextBox>
+						</Grid>
+					</Grid>
+				</Grid>
+			</TabItem>
+		</TabControl>
+		<Button FontSize="20" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Height="50" Width="150" Grid.Column="1" Grid.Row="2">
+			ДОБАВИТЬ
+		</Button>
+	</Grid>
+
+</Window>
