@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DynamicData.Binding;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,7 @@ namespace DiagramCreator.Models
 {
     public class Attributes
     {
+
         private string _AttrName;
         public string AttrName
         {

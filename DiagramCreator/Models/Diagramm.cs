@@ -1,5 +1,7 @@
 ﻿using Avalonia;
+using Avalonia.Controls;
 using Avalonia.Controls.Shapes;
+using Avalonia.Media;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,30 +22,86 @@ namespace DiagramCreator.Models
                 _DiagrammName= value;
             }
         }
-        private Points _MarginPoints;
 
-        public Points MarginPoints
+        private string _DiagrammAccess;
+
+        public string DiagrammAccess
         {
-            get => _MarginPoints;
+            get => _DiagrammAccess;
             set
             {
-                _MarginPoints= value;
+                _DiagrammAccess = value;
             }
         }
 
-        private Point _FirstPoint;
-        public Point FirstPoint
+        private string _IsClassAbstract;
+
+        public string IsClassAbstract
         {
-            get => _FirstPoint;
+            get { return _IsClassAbstract; }
             set
             {
-                _FirstPoint= value;
+                _IsClassAbstract = value;
             }
         }
 
-        public Diagramm() 
+        private string _IsInterface;
+
+        public string IsInterface
         {
-            _DiagrammName = "RUHIDKAasgl.jasgkljadkglasjdgksdajlgsdkgjsdklgjRUHIDKAasgl.jasgkljadkglasjdgksdajlgsdkgjsdklgjRUHIDKAasgl.jasgkljadkglasjdgksdajlgsdkgjsdklgj"; 
+            get { return _IsInterface; }
+            set
+            {
+                _IsInterface = value;
+            }
+        }
+
+        private TextDecorationCollection _IsClassStatic;
+
+        public TextDecorationCollection IsClassStatic
+        {
+            get { return _IsClassStatic; }
+            set
+            {
+                _IsClassStatic = value;
+            }
+        }
+
+        private List<string> _AllAttributesDiagram;
+
+        public List<string> AllAttributesDiagram
+        {
+            get => _AllAttributesDiagram;
+            set
+            {
+                _AllAttributesDiagram = value;
+            }
+        }
+
+        public Diagramm(string NewName, string Static, string Abstract, string IsInter, string Access, List<string> NewAllAttrs) 
+        {
+            _AllAttributesDiagram = new List<string>();
+            foreach (var item in NewAllAttrs)
+            {
+                _AllAttributesDiagram.Add(item);
+            }
+           // _AllAttributesDiagram.Add(new string("<em>- property Рухидка: Малахитка</em>"));
+            _DiagrammName = NewName; 
+            _IsClassAbstract = Abstract;
+            _DiagrammAccess = Access;
+            if (IsInter == "Yes" )
+            {
+                IsInterface = "«interface»";
+            }
+            else { IsInterface = ""; }
+            if (Static == "Underline")
+            {
+                _IsClassStatic = TextDecorationCollection.Parse("Underline");
+            }
+            else
+            {
+                _IsClassStatic = TextDecorationCollection.Parse("");
+            }
         }
 
     }

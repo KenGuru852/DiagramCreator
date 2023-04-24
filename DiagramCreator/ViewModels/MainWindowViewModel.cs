@@ -4,6 +4,7 @@ using DiagramCreator.Models;
 using DiagramCreator.Views;
 using DynamicData;
 using ReactiveUI;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 
@@ -77,6 +78,28 @@ namespace DiagramCreator.ViewModels
             }
         }
 
+        private bool _DiagrammIsStatic;
+
+        public bool DiagrammIsStatic
+        {
+            get { return _DiagrammIsStatic; }
+            set
+            {
+                this.RaiseAndSetIfChanged(ref _DiagrammIsStatic, value);
+            }
+        }
+
+        private bool _DiagrammIsAbstract;
+
+        public bool DiagrammIsAbstract
+        {
+            get { return _DiagrammIsAbstract; }
+            set
+            {
+                this.RaiseAndSetIfChanged(ref _DiagrammIsAbstract, value);
+            }
+        }
+
         private bool _IsDefault;
 
         public bool IsDefault
@@ -141,6 +164,28 @@ namespace DiagramCreator.ViewModels
             }
         }
 
+        private string _IsClassAbstract;
+
+        public string IsClassAbstract
+        {
+            get { return _IsClassAbstract; }
+            set
+            {
+                this.RaiseAndSetIfChanged(ref _IsClassAbstract, value);
+            }
+        }
+
+        private string _IsClassStatic;
+
+        public string IsClassStatic
+        {
+            get { return _IsClassStatic; }
+            set
+            {
+                this.RaiseAndSetIfChanged(ref _IsClassStatic, value);
+            }
+        }
+
         private string _NewParamName;
 
         public string NewParamName
@@ -149,6 +194,39 @@ namespace DiagramCreator.ViewModels
             set
             {
                 this.RaiseAndSetIfChanged(ref _NewParamName, value);
+            }
+        }
+
+        private string _NewClassName;
+
+        public string NewClassName
+        {
+            get { return _NewClassName; }
+            set
+            {
+                this.RaiseAndSetIfChanged(ref _NewClassName, value);
+            }
+        }
+
+        private int _NewClassAccNumber;
+
+        public int NewClassAccNumber
+        {
+            get { return _NewClassAccNumber; }
+            set
+            {
+                this.RaiseAndSetIfChanged(ref _NewClassAccNumber, value);
+            }
+        }
+
+        private int _NewClassSterNumber;
+
+        public int NewClassSterNumber
+        {
+            get { return _NewClassSterNumber; }
+            set
+            {
+                this.RaiseAndSetIfChanged(ref _NewClassSterNumber, value);
             }
         }
 
@@ -295,6 +373,7 @@ namespace DiagramCreator.ViewModels
             }
         }
 
+
         private ObservableCollection<Parametrs> _AllParametrs;
 
         public ObservableCollection<Parametrs> AllParametrs
@@ -328,6 +407,9 @@ namespace DiagramCreator.ViewModels
             NewMethAccNumber = -1;
             ParamNumber = -1;
             MethNumber = -1;
+            NewClassSterNumber = -1;
+            NewClassName = "Название";
+            NewClassAccNumber = -1;
             NewAttrName = "Название";
             NewAttrType = "Тип";
             DefaultSpec = "По умолчанию";
@@ -342,7 +424,6 @@ namespace DiagramCreator.ViewModels
             AllAttributes = new ObservableCollection<Attributes>();
             AllMethods = new ObservableCollection<Methods>();
             AllParametrs = new ObservableCollection<Parametrs>();
-            allDiagramm.Add(new Diagramm());
             ButtonNumber = 1;
         }
         public void AddParametrButton()
@@ -365,6 +446,75 @@ namespace DiagramCreator.ViewModels
             AddWindow = new AddDiagramm { DataContext = this };
             AddWindow.Show();
         }
+        
+        public void NewDiagrammButton()
+        {
+            string[] allAcc = { "public", "protected", "private", "package" };
+            if (NewClassAccNumber == -1 || NewClassSterNumber == -1)
+            {
+                return;
+            }
+            List<string> allAttrs = new List<string>();
+            foreach (var item in AllAttributes)
+            {
+                string temp = "";
+                if (item.AttrAccess == "Public")
+                {
+                    temp += "+ ";
+                }
+                else if (item.AttrAccess == "Protected")
+                {
+                    temp += "# ";
+                }
+                else if (item.AttrAccess == "Private")
+                {
+                    temp += "- ";
+                }
+                else if (item.AttrAccess == "Package")
+                {
+                    temp += "~ ";
+                }
+                // { "«event»", "«property»", "«required»" };
+                temp += item.AttrSter;
+                temp += " ";
+                temp += item.AttrSpec;
+                temp += " ";
+                temp += item.AttrName;
+                temp += ": ";
+                temp += item.AttrType;
+                allAttrs.Add(temp);
+            }
+            string ClassName = "";
+            ClassName = NewClassName;
+            string IsInt = "";
+            string ForDiagramm = "";
+            if (NewClassSterNumber == 2)
+            {
+                IsInt = "Yes";
+            }
+            if (NewClassSterNumber == 1)
+            {
+                IsClassAbstract = "Italic";
+            }
+            else
+            {
+                IsClassAbstract = "Normal";
+            }
+            if (NewClassSterNumber == 0)
+            {
+                IsClassStatic = "Underline";
+            }
+            else
+            {
+                IsClassStatic = "";
+            }
+            ForDiagramm = allAcc[NewClassAccNumber];
+            allDiagramm.Add(new Diagramm(ClassName, IsClassStatic, IsClassAbstract, IsInt, ForDiagramm, allAttrs));
+            NewClassSterNumber = -1;
+            NewClassName = "Название";
+            NewClassAccNumber = -1;
+        }
+
         public void AddMethodButton()
         {
             string ParamForAdd = "(";

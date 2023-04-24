@@ -19,18 +19,28 @@
 
 	<Window.DataTemplates>
 		<DataTemplate DataType="{x:Type local:Diagramm}">
-			<StackPanel Margin="{Binding MarginPoints}">
+			<StackPanel Margin="150,150">
+				<Grid>
+					<Rectangle Stroke="Black" StrokeThickness="2" Width="150" Height="60"/>
+					<StackPanel Height="60">
+						<TextBlock FontStyle="Italic" HorizontalAlignment="Center" Text="{Binding IsInterface}"/>
+						<TextBlock TextDecorations="{Binding IsClassStatic}" FontStyle="{Binding IsClassAbstract}" FontWeight="Bold" HorizontalAlignment="Center" Text="{Binding DiagrammAccess}"/>
+						<TextBlock VerticalAlignment="Center" Width="150" TextWrapping="Wrap" TextDecorations="{Binding IsClassStatic}" FontStyle="{Binding IsClassAbstract}" FontWeight="Bold" HorizontalAlignment="Center" Text="{Binding DiagrammName}"/>
+					</StackPanel>
+				</Grid>
 			<Grid>
-				<Rectangle Stroke="Black" StrokeThickness="2" Width="150" Height="30"/>
-				<TextBox Focusable="False" Width="150" Height="30"  TextWrapping="Wrap" Text="{Binding DiagrammName}"/>
-			</Grid>
+				<Rectangle Stroke="Black" StrokeThickness="2" Width="150" Height="80"/>
+			<ItemsControl Items="{Binding AllAttributesDiagram}">
+				<ItemsControl.ItemsPanel>
+					<ItemsPanelTemplate>
+						<StackPanel Width="130" Height="80" Focusable="True" Cursor="DragMove"  HorizontalAlignment="Center" VerticalAlignment="Center"/>
+					</ItemsPanelTemplate>
+				</ItemsControl.ItemsPanel>
+			</ItemsControl> 
+				</Grid>
 			<Grid>
 				<Rectangle Stroke="Black" StrokeThickness="2" Width="150" Height="60"/>
-				<TextBox Focusable="False" Width="150" Height="60" TextWrapping="Wrap"  Text="{Binding DiagrammName}"/>
-			</Grid>
-			<Grid>
-				<Rectangle  Stroke="Black" StrokeThickness="2" Width="150" Height="60"/>
-				<TextBox IsReadOnly="True" TextWrapping="Wrap" Focusable="False" Width="150" Height="60"  Text="{Binding DiagrammName}"/>
+				<TextBox HorizontalContentAlignment="Center" IsReadOnly="True" TextWrapping="Wrap" Focusable="False" Width="150" Height="60"  Text="River"/>
 			</Grid>
 				<Rectangle Stroke="Black" StrokeThickness="2" Width="150" Height="10"/>
 			</StackPanel>	
